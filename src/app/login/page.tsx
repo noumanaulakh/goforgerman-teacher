@@ -1,10 +1,18 @@
-import { PlaceholderPage } from "@/components/placeholder-page";
+import { LoginForm } from "@/components/login-form";
 
 export default function LoginPage() {
   return (
-    <PlaceholderPage
-      title="Log In"
-      description="Teacher and student accounts are coming soon. For now, browse teachers or submit a registration to get started."
-    />
+    <div className="mx-auto max-w-sm px-6 py-16">
+      <h1 className="font-headline text-3xl font-extrabold text-primary">
+        Log In
+      </h1>
+      <p className="mt-2 text-neutral-900/70">
+        Sign in to manage your teacher profile and bookings.
+      </p>
+
+      <div className="mt-8">
+        <LoginForm />
+      </div>
+    </div>
   );
 }
