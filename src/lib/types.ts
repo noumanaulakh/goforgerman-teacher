@@ -22,3 +22,6 @@ export type TeacherProfile = TeacherListItem & {
   teacher_qualifications: TeacherQualification[];
   teacher_availability: TeacherAvailability[];
 };
+
+export type Student = Tables<"students">;
+export type DiscoveryResponse = Tables<"discovery_responses">;

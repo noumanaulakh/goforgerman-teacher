@@ -74,6 +74,44 @@ export type Database = {
           },
         ]
       }
+      discovery_responses: {
+        Row: {
+          computed_level: string | null
+          created_at: string
+          id: string
+          proficiency_answers: Json
+          reason_for_learning: string | null
+          recommended_specialization_ids: string[]
+          student_id: string
+        }
+        Insert: {
+          computed_level?: string | null
+          created_at?: string
+          id?: string
+          proficiency_answers?: Json
+          reason_for_learning?: string | null
+          recommended_specialization_ids?: string[]
+          student_id: string
+        }
+        Update: {
+          computed_level?: string | null
+          created_at?: string
+          id?: string
+          proficiency_answers?: Json
+          reason_for_learning?: string | null
+          recommended_specialization_ids?: string[]
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discovery_responses_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       price_tier_definitions: {
         Row: {
           description: string
@@ -170,6 +208,33 @@ export type Database = {
           id?: string
           name?: string
           sort_order?: number
+        }
+        Relationships: []
+      }
+      students: {
+        Row: {
+          auth_user_id: string
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          auth_user_id: string
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          auth_user_id?: string
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -313,6 +378,9 @@ export type Database = {
           full_name: string
           headline: string | null
           id: string
+          interview_notes: string | null
+          interview_status: string
+          intro_video_url: string | null
           is_daf_certified: boolean
           is_native_speaker: boolean
           phone: string | null
@@ -323,6 +391,7 @@ export type Database = {
           teaching_philosophy: string | null
           timezone: string
           updated_at: string
+          vetting_notes: string | null
         }
         Insert: {
           auth_user_id?: string | null
@@ -334,6 +403,9 @@ export type Database = {
           full_name: string
           headline?: string | null
           id?: string
+          interview_notes?: string | null
+          interview_status?: string
+          intro_video_url?: string | null
           is_daf_certified?: boolean
           is_native_speaker?: boolean
           phone?: string | null
@@ -344,6 +416,7 @@ export type Database = {
           teaching_philosophy?: string | null
           timezone?: string
           updated_at?: string
+          vetting_notes?: string | null
         }
         Update: {
           auth_user_id?: string | null
@@ -355,6 +428,9 @@ export type Database = {
           full_name?: string
           headline?: string | null
           id?: string
+          interview_notes?: string | null
+          interview_status?: string
+          intro_video_url?: string | null
           is_daf_certified?: boolean
           is_native_speaker?: boolean
           phone?: string | null
@@ -365,6 +441,7 @@ export type Database = {
           teaching_philosophy?: string | null
           timezone?: string
           updated_at?: string
+          vetting_notes?: string | null
         }
         Relationships: []
       }

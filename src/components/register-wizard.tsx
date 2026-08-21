@@ -40,6 +40,7 @@ type FormState = {
   pricingPlans: PricingRow[];
   headshotFile: File | null;
   cvFile: File | null;
+  introVideoFile: File | null;
 };
 
 function newKey() {
@@ -63,6 +64,7 @@ const initialState: FormState = {
   pricingPlans: [],
   headshotFile: null,
   cvFile: null,
+  introVideoFile: null,
 };
 
 function Field({
@@ -117,6 +119,7 @@ export function RegisterWizard({
     try {
       let photoUrl: string | null = null;
       let cvUrl: string | null = null;
+      let introVideoUrl: string | null = null;
       const prefix = newKey();
 
       if (form.headshotFile) {
@@ -138,6 +141,17 @@ export function RegisterWizard({
         cvUrl = path;
       }
 
+      if (form.introVideoFile) {
+        const path = `${prefix}/${form.introVideoFile.name}`;
+        const { error } = await supabase.storage
+          .from("teacher-intro-videos")
+          .upload(path, form.introVideoFile);
+        if (error) throw error;
+        // Private bucket like teacher-documents — vetting material, not
+        // public-facing — so we store the path, not a public URL.
+        introVideoUrl = path;
+      }
+
       const payload = {
         full_name: form.fullName,
         email: form.email,
@@ -149,6 +163,7 @@ export function RegisterWizard({
         is_native_speaker: form.isNativeSpeaker,
         is_daf_certified: form.isDafCertified,
         cv_url: cvUrl,
+        intro_video_url: introVideoUrl,
         timezone: form.timezone,
         teaching_formats: Object.entries(form.formats)
           .filter(([, checked]) => checked)
@@ -477,6 +492,23 @@ export function RegisterWizard({
                 />
               </Field>
             </div>
+
+            <Field label="Short intro video (optional, MP4/MOV/WebM, max 200MB)">
+              <input
+                type="file"
+                accept="video/mp4,video/quicktime,video/webm"
+                onChange={(e) =>
+                  update("introVideoFile", e.target.files?.[0] ?? null)
+                }
+                className="text-sm"
+              />
+              <p className="mt-1 text-xs text-neutral-900/50">
+                A 1&ndash;2 minute video of yourself speaking German and
+                introducing your teaching style. Not required, but strongly
+                recommended &mdash; it&apos;s the fastest way for our team to
+                get a feel for you as a teacher.
+              </p>
+            </Field>
           </div>
         )}
 

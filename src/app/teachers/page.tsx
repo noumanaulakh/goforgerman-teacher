@@ -8,7 +8,31 @@ import type {
 
 export const revalidate = 60;
 
-export default async function TeachersPage() {
+function parseListParam(value: string | string[] | undefined): string[] {
+  if (!value) return [];
+  const raw = Array.isArray(value) ? value.join(",") : value;
+  return raw
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+export default async function TeachersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    format?: string | string[];
+    specialization?: string | string[];
+    tier?: string | string[];
+  }>;
+}) {
+  const params = await searchParams;
+  const initialFormats = parseListParam(params.format);
+  const initialSpecializations = parseListParam(params.specialization);
+  const initialTiers = parseListParam(params.tier)
+    .map((t) => Number(t))
+    .filter((t) => !Number.isNaN(t));
+
   const supabase = await createClient();
 
   const [teachersRes, tiersRes, specializationsRes] = await Promise.all([
@@ -48,6 +72,9 @@ export default async function TeachersPage() {
         teachers={teachers}
         tiers={tiers}
         specializations={specializations}
+        initialFormats={initialFormats}
+        initialSpecializations={initialSpecializations}
+        initialTiers={initialTiers}
       />
     </>
   );

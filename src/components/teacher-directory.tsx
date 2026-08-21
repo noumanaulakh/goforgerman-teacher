@@ -74,14 +74,26 @@ export function TeacherDirectory({
   teachers,
   tiers,
   specializations,
+  initialFormats = [],
+  initialSpecializations = [],
+  initialTiers = [],
 }: {
   teachers: TeacherListItem[];
   tiers: PriceTierDefinition[];
   specializations: Specialization[];
+  initialFormats?: string[];
+  initialSpecializations?: string[];
+  initialTiers?: number[];
 }) {
-  const [formats, setFormats] = useState<Set<string>>(new Set());
-  const [specs, setSpecs] = useState<Set<string>>(new Set());
-  const [selectedTiers, setSelectedTiers] = useState<Set<number>>(new Set());
+  const [formats, setFormats] = useState<Set<string>>(
+    () => new Set(initialFormats)
+  );
+  const [specs, setSpecs] = useState<Set<string>>(
+    () => new Set(initialSpecializations)
+  );
+  const [selectedTiers, setSelectedTiers] = useState<Set<number>>(
+    () => new Set(initialTiers)
+  );
   const [page, setPage] = useState(1);
 
   const filtered = useMemo(() => {
